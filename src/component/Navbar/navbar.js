@@ -26,10 +26,10 @@ const NavBar = () => {
         <Navbar bg="transparant">
             <Container fluid>
                 <Nav style={{cursor: 'pointer'}}>
-                    <img style={{marginLeft: '2rem'}} src={Logo}/>
+                    <img style={{marginLeft: '2rem'}} src={Logo} onClick={() => navigate('/')}/>
                 </Nav>
                 <Nav className="nav__search">
-                    <Form className="d-flex" id="form-flex" onSubmit={(e) => searchRes(e)}>
+                    <Form className="d-flex" onSubmit={(e) => searchRes(e)}>
                         <Form.Control
                         type="text"
                         name="search"

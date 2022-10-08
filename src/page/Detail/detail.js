@@ -6,7 +6,6 @@ import { faCirclePlay as PlayBtn} from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Carousel, Container, Modal} from 'react-bootstrap'
 import Swipers from '../../component/Swipers/swipers'
-import { background1 } from '../../asset/index_image'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-svg-core/styles.css'
 
@@ -48,7 +47,7 @@ const Detail = () => {
                     <div className="image__banner">
                     <img
                     className="d-block w-100"
-                    src={background1}
+                    src={`https://image.tmdb.org/t/p/original${movies.backdrop_path}`}
                     alt="First slide"
                     />
                 </div>

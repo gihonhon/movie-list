@@ -49,7 +49,7 @@ const Swipers = (props) => {
         return (
             <>
             <Swiper
-            slidesPerView={4}
+            slidesPerView={6}
             spaceBetween={30}
             pagination={{
                 clickable: true,
@@ -57,7 +57,7 @@ const Swipers = (props) => {
             className="mySwiper">
                 {cate && cate.map((result) => {
                     return (
-                        <SwiperSlide key={result.id} onClick={() => navigate(`/movie/${result.name}`)}>
+                        <SwiperSlide className="cursor-pointer h-auto mb-10 me-4" key={result.id} onClick={() => navigate(`/search/${result.name}`)}>
                             <Button variant="outline-danger">{result.name}</Button>
                         </SwiperSlide>
 
@@ -101,7 +101,7 @@ const Swipers = (props) => {
             <>
             <Swiper
             slidesPerView={2}
-            spaceBetween={40}
+            spaceBetween={20}
             pagination={{
                 clickable: true
             }}

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay as PlayBtn } from "@fortawesome/free-regular-svg-icons";
 import { faArrowRight as ArrowRight } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
+import './home.css'
 
 const Home = () => {
     const apiv3 = 'a2940e397cdc84f3a8a5619d3d65b9c5'
@@ -57,9 +58,9 @@ const Home = () => {
     return (
         <div>
             <header>
-                <Carousel>
+                <Carousel controls={false}>
                     <Carousel.Item>
-                    <div className="image__banner">
+                    <div className="images relative">
                         <img
                         className="d-block w-100"
                         src={imgSlide1}
@@ -68,8 +69,8 @@ const Home = () => {
                     </div>
                     <Carousel.Caption>
                         <Container>
-                            <div>
-                                <h1>Doctor Strange in the Multiverse of Madness</h1>
+                            <div className="header text-start">
+                                <h1 className="title__caption text-white">Doctor Strange in the Multiverse of Madness</h1>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 <Button variant="danger" onClick={showModal}>
                                     <FontAwesomeIcon icon={PlayBtn}/> Watch Trailer
@@ -87,7 +88,7 @@ const Home = () => {
                     {/** */}
 
                     <Carousel.Item>
-                    <div className="image__banner">
+                    <div className="images relative">
                         <img
                         className="d-block w-100"
                         src={imgSlide2}
@@ -96,8 +97,8 @@ const Home = () => {
                     </div>
                     <Carousel.Caption>
                         <Container>
-                            <div>
-                                <h1>Moon Knight</h1>
+                            <div className="header text-start">
+                                <h1 className="title__caption text-white">Moon Knight</h1>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 <Button variant="danger" onClick={showModal}>
                                     <FontAwesomeIcon icon={PlayBtn}/> Watch Trailer
@@ -113,7 +114,7 @@ const Home = () => {
                     </Carousel.Item>
 
                     <Carousel.Item>
-                    <div className="image__banner">
+                    <div className="images relative">
                         <img
                         className="d-block w-100"
                         src={imgSlide3}
@@ -122,8 +123,8 @@ const Home = () => {
                     </div>
                     <Carousel.Caption>
                         <Container>
-                            <div>
-                                <h1>Jurassic World Dominion</h1>
+                            <div className="header text-start">
+                                <h1 className="title__caption text-white">Jurassic World Dominion</h1>
                                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                                 <Button variant="danger" onClick={showModal}>
                                     <FontAwesomeIcon icon={PlayBtn}/> Watch Trailer
@@ -139,18 +140,20 @@ const Home = () => {
                     </Carousel.Item>
                 </Carousel>
             </header>
-            <section>
+            <section className="content-section">
                 <Container>
-                    <div>
+                    <div className="tittle-content">
                         <h2>Popular Movie</h2>
                         <p>See All Movies <FontAwesomeIcon icon={ArrowRight}/></p>
                     </div>
                     <Swipers movie={popular}/>
-                    <div>
+                    <div className="tittle-content">
                         <h2>Browse by Category </h2>
                         <p>See All Movies <FontAwesomeIcon icon={ArrowRight}/></p>
                     </div>
-                    <Swipers cate={category}/>
+                    <Swipers cate={category} on/>
+                    <br/>
+                    <br/>
                     <Swipers movie={upcoming}/>
                 </Container>
             </section>

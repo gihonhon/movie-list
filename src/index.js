@@ -17,7 +17,7 @@ root.render(
       <Route path='/' element={<Home/>}></Route>
       <Route path='/movie/:id' element={<Detail/>}></Route>
       <Route path='/search/:que' element={<Search/>}></Route>
-      <Route path='/movie/:category' element={<Search/>}></Route>
+      <Route path='/search/:category' element={<Search/>}></Route>
     </Routes>
     <Footer/>
     </BrowserRouter>
