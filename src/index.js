@@ -1,14 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Footer from './component/Footer/footer';
+import NavBar from './component/Navbar/navbar';
+import Search from './component/Search/search';
 import './index.css'
+import Detail from './page/Detail/detail';
+import Home from './page/Home/home';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+    <NavBar/>
+    <Routes>
+      <Route path='/' element={<Home/>}></Route>
+      <Route path='/movie/:id' element={<Detail/>}></Route>
+      <Route path='/search/:que' element={<Search/>}></Route>
+      <Route path='/movie/:category' element={<Search/>}></Route>
+    </Routes>
+    <Footer/>
     </BrowserRouter>
     
   </React.StrictMode>
