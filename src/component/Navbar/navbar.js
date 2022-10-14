@@ -45,7 +45,7 @@ const NavBar = () => {
         console.log(email)
         console.log(password)
         try {
-            const res = await axios.post('http://notflixtv.herokuapp.com/api/v1/users/login', {
+            const res = await axios.post('https://notflixtv.herokuapp.com/api/v1/users/login', {
             email: email,
             password: password
         });
@@ -61,7 +61,7 @@ const NavBar = () => {
 
     const handleSubmitReg = async () => {
         try {
-            const response = await axios.post('http://notflixtv.herokuapp.com/api/v1/users', {
+            const response = await axios.post('https://notflixtv.herokuapp.com/api/v1/users', {
                 first_name: firstName,
                 last_name: lastName,
                 email: emailReg,

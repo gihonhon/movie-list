@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.83cd6c5e.css",
-    "main.js": "/static/js/main.807e04e2.js",
+    "main.css": "/static/css/main.3a20f1b8.css",
+    "main.js": "/static/js/main.47f45b5e.js",
     "static/media/JWDominion.jpg": "/static/media/JWDominion.586e1098c1e980343dad.jpg",
     "static/media/moon-knight.jpg": "/static/media/moon-knight.ad4ecf0f06a8f69c40b2.jpg",
     "static/media/drStrange.jpg": "/static/media/drStrange.2e827a0be3e5b551adee.jpg",
     "static/media/chair_bg.jpg": "/static/media/chair_bg.bfc546e46b02dbc3caaa.jpg",
     "static/media/movielistLogo.svg": "/static/media/movielistLogo.eeba5c17ddf85f2145e83dd963662921.svg",
     "index.html": "/index.html",
-    "main.83cd6c5e.css.map": "/static/css/main.83cd6c5e.css.map",
-    "main.807e04e2.js.map": "/static/js/main.807e04e2.js.map"
+    "main.3a20f1b8.css.map": "/static/css/main.3a20f1b8.css.map",
+    "main.47f45b5e.js.map": "/static/js/main.47f45b5e.js.map"
   },
   "entrypoints": [
-    "static/css/main.83cd6c5e.css",
-    "static/js/main.807e04e2.js"
+    "static/css/main.3a20f1b8.css",
+    "static/js/main.47f45b5e.js"
   ]
 }
