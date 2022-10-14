@@ -82,6 +82,10 @@
     box-shadow: none;
 }
 
+#login-modal  {
+    border: 1px solid rgba(0,0,0, 0.5);
+}
+
 .form-control:active {
     background: transparent;
 }
@@ -89,4 +93,11 @@
 .fa-magnifying-glass {
     padding-right: 1rem;
     color: rgba(255, 255, 255, 1);
+}
+
+.btn-close {
+    font-size: 0.8rem;
+}
+.modal-dialog {
+    margin-top: 8rem;
 }
