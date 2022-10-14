@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.3a20f1b8.css",
-    "main.js": "/static/js/main.47f45b5e.js",
+    "main.js": "/static/js/main.a7fe077a.js",
     "static/media/JWDominion.jpg": "/static/media/JWDominion.586e1098c1e980343dad.jpg",
     "static/media/moon-knight.jpg": "/static/media/moon-knight.ad4ecf0f06a8f69c40b2.jpg",
     "static/media/drStrange.jpg": "/static/media/drStrange.2e827a0be3e5b551adee.jpg",
@@ -9,10 +9,10 @@
     "static/media/movielistLogo.svg": "/static/media/movielistLogo.eeba5c17ddf85f2145e83dd963662921.svg",
     "index.html": "/index.html",
     "main.3a20f1b8.css.map": "/static/css/main.3a20f1b8.css.map",
-    "main.47f45b5e.js.map": "/static/js/main.47f45b5e.js.map"
+    "main.a7fe077a.js.map": "/static/js/main.a7fe077a.js.map"
   },
   "entrypoints": [
     "static/css/main.3a20f1b8.css",
-    "static/js/main.47f45b5e.js"
+    "static/js/main.a7fe077a.js"
   ]
 }
