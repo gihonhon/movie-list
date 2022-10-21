@@ -1,213 +1,390 @@
-import React, { useState } from "react";
-import {Container, Row, Col, Navbar, Nav, Form, Button, Modal} from 'react-bootstrap';
+import React, { useState, useEffect } from "react";
+import { Container, Navbar, Nav, Form, Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 import axios from "axios";
-import { faMagnifyingGlass as SearchIcon } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope as emailIcon } from "@fortawesome/free-regular-svg-icons"
-import '@fortawesome/fontawesome-svg-core/styles.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Logo } from '../../asset/index_image';
-import './navbar.css';
+import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass as SearchIcon } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope as emailIcon,
+  faEye as eyeIcon,
+  faEyeSlash as eyeSlash,
+} from "@fortawesome/free-regular-svg-icons";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Logo, account } from "../../asset/index_image";
+import "./navbar.css";
+
 // import Login from "../modal/login";
 // import Register from "../modal/register";
 
-
-
 const NavBar = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  const searchRes = async (e) => {
+    e.preventDefault();
+    let data = e.target[0].value;
 
-    const searchRes = async (e) => {
-        e.preventDefault()
-        let data = e.target[0].value;
+    navigate(`/search/${data}`);
+  };
 
-        navigate(`/search/${data}`)
+  // validation
+  let emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+
+  // Login & Register State
+  const [login, setLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
+  const handleShowLogin = () => setShowLogin(true);
+  const handleCloseLogin = () => setShowLogin(false);
+  const handleShowRegister = () => setShowRegister(true);
+  const handleCloseRegister = () => setShowRegister(false);
+
+  const [user, setUser] = useState();
+  const [email, setEmail] = useState("");
+  const [sandi, setSandi] = useState("");
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [emailRegis, setEmailRegis] = useState("");
+  const [sandiRegis, setSandiRegis] = useState("");
+  const [sandiConfirm, setSandiConfirm] = useState("");
+
+  const [showPass, setShowPass] = useState(true);
+  const [pass, setPass] = useState("password");
+  const [typeInput, setTypeInput] = useState(false);
+
+  const Eye = () => {
+    if (pass === "password") {
+      setPass("text");
+      setShowPass(false);
+      setTypeInput(true);
+    } else {
+      setPass("password");
+      setShowPass(true);
+      setTypeInput(false);
     }
+  };
 
-    const [show, setShow] = useState(false)
-    const [showReg, setShowReg] = useState(false)
-    const handleCloseReg = () => setShowReg(false)
-    const handleOpenReg = () => setShowReg(true)
-    const handleShow = () => setShow(true)
-    const handleClose = () => setShow(false)
-
-
-    const [firstName, setFirstName] = useState("")
-    const [lastName, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [emailReg, setEmailReg] = useState("")
-    const [password, setPassword] = useState("")
-    const [passwordReg, setPasswordReg] = useState("")
-    // const [passConfirm, setPassConfirm] = useState("")
-
-    const handleSubmitLogin = async () => {
-        console.log(email)
-        console.log(password)
-        try {
-            const res = await axios.post('https://notflixtv.herokuapp.com/api/v1/users/login', {
-            email: email,
-            password: password
-        });
-        console.log(res.data.data)
-        localStorage.setItem('user', JSON.stringify(res.data.data.token))
-        setEmail("")
-        setPassword("")
-        setShow(false)
-        } catch (error) {
-            console.log(error)
+  const handleSubmit = async () => {
+    try {
+      const res = await axios.post(
+        "https://notflixtv.herokuapp.com/api/v1/users/login",
+        {
+          email: email,
+          password: sandi,
         }
+      );
+      localStorage.setItem("token", JSON.stringify(res.data.data.token));
+      localStorage.setItem("user", JSON.stringify(res.data.data.first_name));
+      localStorage.setItem("image", JSON.parse(res.data.data.image));
+      localStorage.setItem("log", JSON.stringify(res.data.data));
+      setUser(res.data.data);
+      setSandi("");
+      setEmail("");
+      setShowLogin(false);
+      setLogin(true);
+      Swal.fire("Tolol!", "Login Berhasil", "success");
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Blokk",
+        text: "Dasar tolol",
+      });
     }
+  };
 
-    const handleSubmitReg = async () => {
-        try {
-            const response = await axios.post('https://notflixtv.herokuapp.com/api/v1/users', {
-                first_name: firstName,
-                last_name: lastName,
-                email: emailReg,
-                password: passwordReg,
-                password_confirmation: passwordReg
-            })
-            console.log(response.data.data)
-            localStorage.setItem('user', JSON.stringify(response.data.data.token))
-            setFirstName("")
-            setLastName("")
-            setEmailReg("")
-            setPasswordReg("")
-            setShowReg(false)
-        } catch (error) {
-            console.log(error)
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem("token"));
+    setLogin(token);
+    setLogin(true);
+    const user = JSON.parse(localStorage.getItem("log"));
+    setUser(user);
+  }, [login]);
+
+  const handleSubmitRegis = async () => {
+    try {
+      const resReg = await axios.post(
+        "https://notflixtv.herokuapp.com/api/v1/users",
+        {
+          first_name: firstName,
+          last_name: lastName,
+          email: emailRegis,
+          password: sandiRegis,
+          password_confirmation: sandiConfirm,
         }
+      );
+      setShowRegister(false);
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "oops..",
+        text: "Email or Password Wrong!",
+      });
     }
+  };
 
-    // const [loginModal, setLoginModal] = useState(false)
-    // const [registerModal, setRegisterModal] = useState(false)
-    // const handleLogin = () => setLoginModal(false)
-    // const handleRegister = () => setRegisterModal(false)
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Log Out",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      denyButtonText: "No",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Succes Log Out", "", "success");
+        setTimeout(function () {
+          window.location.reload(1);
+        }, 1500);
+        localStorage.clear();
+      } else if (result.isDenied) {
+        Swal.fire("Cancel", "", "info");
+      }
+    });
+  };
 
-    
-    return (
-        <Navbar bg="transparant">
-            <Container>
-                <Nav style={{cursor: 'pointer'}}>
-                    <img style={{marginLeft: '2rem'}} src={Logo} onClick={() => navigate('/')}/>
-                </Nav>
-                <Nav className="nav__search">
-                    <Form className="d-flex" onSubmit={(e) => searchRes(e)}>
-                        <Form.Control
-                        type="text"
-                        name="search"
-                        aria-label="Search"
-                        placeholder="What do you want to watch?"
-                        />
-                        <FontAwesomeIcon icon={SearchIcon}/>
-                    </Form>
-                </Nav>
 
-                <Nav className="nav__button">
-                    <Button variant="outline-danger" onClick={handleShow}>Login</Button>
+  let token = localStorage.getItem("token");
+  let profile = localStorage.getItem("user");
+  let image = localStorage.getItem("image");
 
-                    <Modal
-                    size="md"
-                    show={show}
-                    onHide={handleClose}
-                    backdrop="static"
-                    keyboard={false}>
-                        <Modal.Header closeButton>
-                            <Modal.Title style={{fontSize: '16px'}}>Log in Your Account</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control
-                                    type="email"
-                                    placeholder="Email Address"
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    style={{borderRadius: '9999px',border: '1px solid rgba(153, 153, 153, 1)', color:'black'}}/>
-                                </Form.Group>
+  // const [passConfirm, setPassConfirm] = useState("")
 
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control 
-                                    style={{border: '1px solid rgba(153, 153, 153, 1)', color:'black', borderRadius: '9999px'}}
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={(e) => setPassword(e.target.value)}/>
-                                </Form.Group>
-                            </Form>
-                        </Modal.Body>
-                        <Modal.Footer style={{justifyContent: 'flex-start'}}>
-                            <Button type="submit" variant="danger" onClick={handleSubmitLogin}>Login</Button>
-                        </Modal.Footer>
-                    </Modal>
+  return (
+    <Navbar bg="transparant">
+      <Container fluid>
+        <Nav style={{ cursor: "pointer" }}>
+          <img
+            style={{ marginLeft: "2rem" }}
+            src={Logo}
+            onClick={() => navigate("/")}
+          />
+        </Nav>
+        <Nav className="nav__search">
+          <Form className="d-flex" onSubmit={(e) => searchRes(e)}>
+            <Form.Control
+              type="text"
+              name="search"
+              aria-label="Search"
+              placeholder="What do you want to watch?"
+            />
+            <FontAwesomeIcon icon={SearchIcon} />
+          </Form>
+        </Nav>
 
-                    <Button variant="danger" onClick={handleOpenReg}>Register</Button>
-                    <Modal
-                    size="md"
-                    show={showReg}
-                    onHide={handleCloseReg}
-                    backdrop="static"
-                    keyboard={false}>
-                        <Modal.Header closeButton>
-                            <Modal.Title style={{fontSize: '16px'}}>Create Account</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <Form>
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control
-                                    type="text"
-                                    placeholder="First Name"
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    style={{borderRadius: '9999px',border: '1px solid rgba(153, 153, 153, 1)', color:'black'}}
-                                    />
-                                </Form.Group>
+        {token && login && token.length ? (
+          <Nav className="nav_login">
+            <h2>Halo, {JSON.parse(profile)}</h2>
 
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control
-                                    type="text"
-                                    placeholder="Last Name"
-                                    onChange={(e) => setLastName(e.target.value)}
-                                    style={{borderRadius: '9999px',border: '1px solid rgba(153, 153, 153, 1)', color:'black'}}
-                                    />
-                                </Form.Group>
+            {user.image || user.picture ? (
+              <img src={JSON.parse(image) || JSON.parse(user.picture)} />
+            ) : (
+              <img src={account} />
+            )}
 
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control
-                                    type="email"
-                                    placeholder="Email Address"
-                                    onChange={(e) => setEmailReg(e.target.value)}
-                                    style={{borderRadius: '9999px',border: '1px solid rgba(153, 153, 153, 1)', color:'black'}}
-                                    />
-                                </Form.Group>
+            <Button variant="danger" onClick={handleLogout}>
+              Log Out
+            </Button>
+          </Nav>
+        ) : (
+          <Nav className="nav__button">
+            <Button variant="outline-danger" onClick={handleShowLogin}>
+              Login
+            </Button>
 
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control
-                                    type="password"
-                                    placeholder="Password"
-                                    onChange={(e) => setPasswordReg(e.target.value)}
-                                    style={{borderRadius: '9999px',border: '1px solid rgba(153, 153, 153, 1)', color:'black'}}
-                                    />
-                                </Form.Group>
+            <Modal
+              size="md"
+              show={showLogin}
+              onHide={handleCloseLogin}
+              backdrop="static"
+              keyboard={false}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title style={{ fontSize: "16px" }}>
+                  Log in Your Account
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      type="email"
+                      placeholder="Email Address"
+                      onChange={(e) => setEmail(e.target.value)}
+                      style={{
+                        borderRadius: "9999px",
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                      }}
+                    />
+                    {email.match(emailRegex) === null ? (
+                      <span>Please Input a Valid Email</span>
+                    ) : (
+                      ""
+                    )}
+                    <div className="icon icon-email">
+                      <FontAwesomeIcon icon={emailIcon} />
+                    </div>
+                  </Form.Group>
 
-                                <Form.Group style={{marginBottom: '1.5rem'}}>
-                                    <Form.Control
-                                    type="password"
-                                    placeholder="Password Confirmation"
-                                    onChange={(e) => setPasswordReg(e.target.value)}
-                                    style={{borderRadius: '9999px',border: '1px solid rgba(153, 153, 153, 1)', color:'black'}}
-                                    />
-                                </Form.Group>
-                            </Form>
-                        </Modal.Body>
-                        <Modal.Footer style={{justifyContent: 'flex-start'}}>
-                        <Button variant="danger" onClick={handleSubmitReg}>Register Now</Button>
-                        </Modal.Footer>
-                    </Modal>
-                </Nav>
-                
-            </Container>
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      style={{
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                        borderRadius: "9999px",
+                      }}
+                      type={pass}
+                      placeholder="Password"
+                      onChange={(e) => setSandi(e.target.value)}
+                      className={`${typeInput ? "typeInputPass" : ""} formPass`}
+                    />
+                    <div className="icon icon-pass">
+                      <FontAwesomeIcon
+                        onClick={Eye}
+                        icon={showPass ? eyeIcon : eyeSlash}
+                      />
+                    </div>
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer style={{ justifyContent: "flex-start" }}>
+                <Button type="submit" variant="danger" onClick={handleSubmit}>
+                  Login
+                </Button>
+                {/* Todo */}
+                <GoogleLogin
+                onSuccess={(response) => {
+                  console.log(response);
+                  let decode = jwt_decode(response.credential);
+                  console.log(decode);
+                  localStorage.setItem("token", JSON.stringify(response.credential));
+                  localStorage.setItem("image", JSON.stringify(decode.picture));
+                  localStorage.setItem("user", JSON.stringify(decode.name));
+                  localStorage.setItem("log", JSON.stringify(decode));
+                  setUser(decode);
+                  setLogin(true);
+                  Swal.fire("Login Success", "", 'success');
+                }}
+                onError={() => {
+                  console.log('Login Failed')
+                }}
+                />
+              </Modal.Footer>
+            </Modal>
 
-        </Navbar>
-    )
-}
+            <Button variant="danger" onClick={handleShowRegister}>
+              Register
+            </Button>
+            <Modal
+              size="md"
+              show={showRegister}
+              onHide={handleCloseRegister}
+              backdrop="static"
+              keyboard={false}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title style={{ fontSize: "16px" }}>
+                  Create Account
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      type="text"
+                      placeholder="First Name"
+                      onChange={(e) => setFirstName(e.target.value)}
+                      style={{
+                        borderRadius: "9999px",
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                      }}
+                    />
+                  </Form.Group>
 
-export default NavBar
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      type="text"
+                      placeholder="Last Name"
+                      onChange={(e) => setLastName(e.target.value)}
+                      style={{
+                        borderRadius: "9999px",
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                      }}
+                    />
+                  </Form.Group>
+
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      type="email"
+                      placeholder="Email Address"
+                      onChange={(e) => setEmailRegis(e.target.value)}
+                      style={{
+                        borderRadius: "9999px",
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                      }}
+                    />
+                    <div className="icon icon-emailRegis">
+                      <FontAwesomeIcon icon={emailIcon} />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      type="password"
+                      placeholder="Password"
+                      onChange={(e) => setSandiRegis(e.target.value)}
+                      style={{
+                        borderRadius: "9999px",
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                      }}
+                    />
+                    <div className="icon icon-passRegis">
+                      <FontAwesomeIcon
+                        onClick={Eye}
+                        icon={showPass ? eyeIcon : eyeSlash}
+                      />
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group style={{ marginBottom: "1.5rem" }}>
+                    <Form.Control
+                      type="password"
+                      placeholder="Password Confirmation"
+                      onChange={(e) => setSandiConfirm(e.target.value)}
+                      style={{
+                        borderRadius: "9999px",
+                        border: "1px solid rgba(153, 153, 153, 1)",
+                        color: "black",
+                      }}
+                    />
+                    <div className="icon icon-passRegisConf">
+                      <FontAwesomeIcon
+                        onClick={Eye}
+                        icon={showPass ? eyeIcon : eyeSlash}
+                      />
+                    </div>
+                  </Form.Group>
+                </Form>
+              </Modal.Body>
+              <Modal.Footer style={{ justifyContent: "flex-start" }}>
+                <Button variant="danger" onClick={null}>
+                  Register Now
+                </Button>
+              </Modal.Footer>
+            </Modal>
+          </Nav>
+        )}
+      </Container>
+    </Navbar>
+  );
+};
+
+export default NavBar;

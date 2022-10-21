@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Button } from "react-bootstrap";
 import { faStar as Rating } from '@fortawesome/free-solid-svg-icons'
+import { faClipboard as ClipBoard } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-svg-core/styles.css'
@@ -57,7 +58,7 @@ const Swipers = (props) => {
             className="mySwiper">
                 {cate && cate.map((result) => {
                     return (
-                        <SwiperSlide className="cursor-pointer h-auto mb-10 me-4" key={result.id} onClick={() => navigate(`/search/${result.name}`)}>
+                        <SwiperSlide className="cursor-pointer h-auto mb-10 me-4" key={result.id} onClick={() => navigate(`/cat/${result.name}`,{ state: result.name })}>
                             <Button variant="outline-danger">{result.name}</Button>
                         </SwiperSlide>
 
@@ -110,30 +111,31 @@ const Swipers = (props) => {
                     review.map((result) => {
                         return (
                             <SwiperSlide key={result.id}>
-                                <div>
-                                    <div>
-                                        <span>
+                                <div className="commentCard">
+                                    <div style={{display: 'flex', marginBottom: '1.5rem', alignItems: 'center'}}>
+                                        <span className="usersAvatar">
                                             <img src={`https://ui-avatars.com/api/?name=${result.author}`}/>
                                         </span>
-                                        <span>{result.author}</span>
+                                        <span style={{marginLeft: '1rem', fontSize: '1.5rem'}}>{result.author}</span>
                                     </div>
                                     <p>
                                         {result.author_details.rating === null ? (
                                             "empty"
                                         ) : (
-                                            <div>
-                                                <FontAwesomeIcon icon={Rating}/> {result.author_details.rating}
+                                            <div style={{display: 'flex', alignItems: 'center'}}>
+                                                <FontAwesomeIcon color="orange" icon={Rating}/> {result.author_details.rating} / 10
                                             </div>
                                         )}
                                     </p>
-                                    <h1>{result.content}</h1>
+                                    <h5>{result.content}</h5>
                                     <p></p>
                                 </div>
                             </SwiperSlide>
                         );
                     })
                 ) : (
-                    <div>
+                    <div className="not-data">
+                        <FontAwesomeIcon fontSize="4rem" color="rgba(156, 163, 175, 1)"  icon={ClipBoard}/>
                         <h1>There is no data</h1>
                     </div>
                 )}

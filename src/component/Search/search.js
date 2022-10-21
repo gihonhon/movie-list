@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { Carousel, Button, Container } from 'react-bootstrap'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,10 +8,14 @@ import { background1 } from '../../asset/index_image'
 import Swipers from "../Swipers/swipers";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-svg-core/styles.css'
+import './search.css'
+import NavBar from "../Navbar/navbar";
 
 
 const Search = () => {
     const { que, category } = useParams()
+    const navigate = useNavigate()
+    const location = useLocation()
 
     const [movie, setMovie] = useState([])
     const [cate, setCate] = useState([])
@@ -38,6 +42,7 @@ const Search = () => {
 
     return (
         <div>
+            {/* <NavBar/> */}
             <Carousel indicators={false} controls={false}>
                 <Carousel.Item>
                     <div className="images" style={{height: '60vh'}}>
@@ -47,7 +52,7 @@ const Search = () => {
                         <Container>
                             <div className="header text-start">
                                 {category ? (
-                                    <h1 className="header_text">Genre:{category}</h1>
+                                    <h1 className="header_text">Genre:{location.state}</h1>
                                 ): (
                                     <h1 className="header-text">All Movies "{que}"</h1>
                                 )}
@@ -57,25 +62,25 @@ const Search = () => {
                 </Carousel.Item>
             </Carousel>
 
-            <section className="container result-text">
+            <section className="movieSection">
                 {category ? (
                     <>
-                    <h1 className="tittle-section">Browse by category {category}</h1>
-                    <Swipers cate={category}/>
+                    <h1 className="tittle-section">Browse by category {location.state}</h1>
+                    <Swipers cate={cate}/>
                     </>
                 ):(
                     <h1 className="tittle-section">Search result "{que}"</h1>
                 )}
 
                 {movie.length > 0 ? (
-                    <div>
-                        {movie.map((result) => {
+                    <div className="movieWrapper">
+                        {movie.map((movies) => {
                             return (
-                                <div>
-                                    <img src={`https://image.tmdb.org/t/p/w500/${result.poster_path}`}/>
-                                    <div>
-                                        <h4>{result.original_title}</h4>
-                                        <p><FontAwesomeIcon icon={Rating}/>{result.vote_average}/10</p>
+                                <div className="movie-card" onClick={() => navigate(`/movie/${movies.id}`)}>
+                                    <img className="image-card" src={`https://image.tmdb.org/t/p/w500/${movies.poster_path}`}/>
+                                    <div className="movie-info">
+                                        <h5>{movies.original_title}</h5>
+                                        <p><FontAwesomeIcon color="orange" icon={Rating}/>{movies.vote_average}/10</p>
                                     </div>
                                 </div>
                             );

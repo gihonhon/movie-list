@@ -1,30 +1,32 @@
 import React from "react";
+import { Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBowlFood } from '@fortawesome/free-solid-svg-icons'
-import { faFacebook,faInstagram, faTwitter } from '@fortawesome/free-brands-svg-icons'
-import { Link } from "react-router-dom";
+import { faCube } from '@fortawesome/free-solid-svg-icons'
+import { faFacebookSquare as FB, faInstagram as IG, faTwitter as TWT , faYoutube as YT} from '@fortawesome/free-brands-svg-icons'
 import './footer.css'
-import { Container } from "react-bootstrap";
+import { LogoIcon } from "../../asset/index_image";
 
 function Footer () {
     return (
-        <Container>
-            <footer className="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top footer__head">
-            <div class="col-md-4 d-flex align-items-center">
-                <Link to='/' className="footerLink">
-                    <FontAwesomeIcon icon={faBowlFood}/>
-                </Link>
-                <span className="mb-3 mb-md-0 text-muted">&copy; Created by Honhon</span>
-            </div>
-            <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-                <li className="ms-3"><FontAwesomeIcon className="footerIcon" icon={faFacebook}/></li>
-                <li className="ms-3"><FontAwesomeIcon className="footerIcon" icon={faInstagram}/></li>
-                <li className="ms-3"><FontAwesomeIcon className="footerIcon" icon={faTwitter}/></li>
-                {/* <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"/></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"/></svg></a></li>
-                <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"/></svg></a></li> */}
-            </ul>
+        <Container fluid style={{paddingBottom: '0.5rem', background: 'rgb(230, 230, 230)'}}>
+            <footer>
+                <ul className="sosialMedia">
+                    <li><a href="https://www.facebook.com/GoodMoviesList/"><FontAwesomeIcon icon={FB}/></a></li>
+                    <li><a href="https://www.instagram.com/themovielist/?hl=id"><FontAwesomeIcon icon={IG}/></a></li>
+                    <li><a href="https://twitter.com/themoviedb"><FontAwesomeIcon icon={TWT}/></a></li>
+                    <li><a href="https://www.youtube.com/c/TheChoiceBox"><FontAwesomeIcon icon={YT}/></a></li>
+                </ul>
+                <ul className="footerList">
+                    <li><a href="/">Condition of Use</a></li>
+                    <li><a href="/">Privacy & Policy</a></li>
+                    <li><a href="/">Press Room</a></li>
+
+                </ul>
+                <div className="copyrightSign">
+                    <a href="https://github.com/gihonhon"><FontAwesomeIcon icon={faCube}/></a>
+                    <span>&copy;2022 Created by Honhon</span>
+                </div>
             </footer>
         </Container>
     )

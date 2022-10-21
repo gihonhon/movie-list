@@ -7,10 +7,13 @@ import { faCirclePlay as PlayBtn } from "@fortawesome/free-regular-svg-icons";
 import { faArrowRight as ArrowRight } from '@fortawesome/free-solid-svg-icons'
 import axios from "axios";
 import './home.css'
+import NavBar from "../../component/Navbar/navbar";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     const apiv3 = 'a2940e397cdc84f3a8a5619d3d65b9c5'
 
+    const navigate = useNavigate()
     const [popular, setPopular] = useState([])
     const [upcoming, setUpComing] = useState([])
     const [category, setCategory] = useState([])
@@ -57,6 +60,7 @@ const Home = () => {
 
     return (
         <div>
+            {/* <NavBar/> */}
             <header>
                 <Carousel controls={false}>
                     <Carousel.Item>
@@ -144,7 +148,7 @@ const Home = () => {
                 <Container>
                     <div className="tittle-content">
                         <h2>Popular Movie</h2>
-                        <p>See All Movies <FontAwesomeIcon icon={ArrowRight}/></p>
+                        <p onClick={() => navigate('/')}>See All Movies <FontAwesomeIcon icon={ArrowRight}/></p>
                     </div>
                     <Swipers movie={popular}/>
                     <div className="tittle-content">
