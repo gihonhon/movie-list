@@ -37,10 +37,13 @@ const NavBar = () => {
   const [login, setLogin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
   const handleShowLogin = () => setShowLogin(true);
   const handleCloseLogin = () => setShowLogin(false);
   const handleShowRegister = () => setShowRegister(true);
   const handleCloseRegister = () => setShowRegister(false);
+  const handleShowProfile = () => setShowProfile(true);
+  const handleCloseProfile = () => setShowProfile(false)
 
   const [user, setUser] = useState();
   const [email, setEmail] = useState("");
@@ -176,19 +179,38 @@ const NavBar = () => {
         </Nav>
 
         {token && login && token.length ? (
-          <Nav className="nav_login">
-            <h2>Halo, {JSON.parse(profile)}</h2>
+          <Nav className="nav_login" style={{display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center', paddingRight: '3rem'}}>
+            <h2 style={{fontSize: '1.25rem', lineHeight: '1.75rem', color: 'white'}}>Halo, {JSON.parse(profile)}</h2>
 
             {user.image || user.picture ? (
-              <img src={JSON.parse(image) || JSON.parse(user.picture)} />
+              <img onClick={handleShowProfile} className="profile-picture" src={JSON.parse(image) || JSON.parse(user.picture)} />
             ) : (
-              <img src={account} />
+              <img className="profile-picture" src={account} />
             )}
 
-            <Button variant="danger" onClick={handleLogout}>
-              Log Out
-            </Button>
+            <Modal
+            size="md"
+            show={showProfile}
+            onHide={handleCloseProfile}
+            backdrop="static"
+            keyboard={false}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title style={{ fontSize: "16px" }}>
+                  Your Account
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form></Form>
+              </Modal.Body>
+              <Modal.Footer style={{ justifyContent: "flex-start" }}>
+                <Button variant="danger" onClick={handleLogout}>Log Out</Button>
+              </Modal.Footer>
+            </Modal>
           </Nav>
+          
         ) : (
           <Nav className="nav__button">
             <Button variant="outline-danger" onClick={handleShowLogin}>
@@ -221,7 +243,7 @@ const NavBar = () => {
                       }}
                     />
                     {email.match(emailRegex) === null ? (
-                      <span>Please Input a Valid Email</span>
+                      <span style={{color: 'red'}}>Please Input a Valid Email</span>
                     ) : (
                       ""
                     )}
@@ -257,6 +279,8 @@ const NavBar = () => {
                 </Button>
                 {/* Todo */}
                 <GoogleLogin
+                size="large"
+                text="continue_with"
                 onSuccess={(response) => {
                   console.log(response);
                   let decode = jwt_decode(response.credential);
@@ -337,7 +361,7 @@ const NavBar = () => {
 
                   <Form.Group style={{ marginBottom: "1.5rem" }}>
                     <Form.Control
-                      type="password"
+                      type={pass}
                       placeholder="Password"
                       onChange={(e) => setSandiRegis(e.target.value)}
                       style={{
@@ -345,6 +369,7 @@ const NavBar = () => {
                         border: "1px solid rgba(153, 153, 153, 1)",
                         color: "black",
                       }}
+                      className={`${typeInput ? "type_password" : ""} formPass`}
                     />
                     <div className="icon icon-passRegis">
                       <FontAwesomeIcon
@@ -356,7 +381,7 @@ const NavBar = () => {
 
                   <Form.Group style={{ marginBottom: "1.5rem" }}>
                     <Form.Control
-                      type="password"
+                      type={pass}
                       placeholder="Password Confirmation"
                       onChange={(e) => setSandiConfirm(e.target.value)}
                       style={{
@@ -364,6 +389,7 @@ const NavBar = () => {
                         border: "1px solid rgba(153, 153, 153, 1)",
                         color: "black",
                       }}
+                      className={`${typeInput ? "type_password" : ""} formPass`}
                     />
                     <div className="icon icon-passRegisConf">
                       <FontAwesomeIcon
@@ -375,7 +401,7 @@ const NavBar = () => {
                 </Form>
               </Modal.Body>
               <Modal.Footer style={{ justifyContent: "flex-start" }}>
-                <Button variant="danger" onClick={null}>
+                <Button variant="danger" onClick={handleSubmitRegis}>
                   Register Now
                 </Button>
               </Modal.Footer>

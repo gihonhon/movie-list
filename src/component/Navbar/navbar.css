@@ -52,6 +52,17 @@
     margin-bottom: 0;
 }
 
+.nav__login {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.profile-picture{
+    border-radius: 9999px;
+    width: 3.5rem;
+}
+
 .d-flex {
     display: flex;
     justify-content: center;
@@ -126,4 +137,19 @@
 .icon-pass {
     z-index: 9999;
     bottom: 2.9rem;
+}
+
+.icon-emailRegis {
+    z-index: 9999;
+    bottom: 10.8rem;
+}
+
+.icon-passRegis {
+    z-index: 9999;
+    top: 61%;
+}
+
+.icon-passRegisConf {
+    z-index: 9999;
+    top: 79%;
 }
